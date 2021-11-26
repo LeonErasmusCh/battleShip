@@ -113,7 +113,19 @@ function App() {
 	]);
 
 	const [playerHit, setPlayerHit] = useState([]);
+	const [playerScore, setPlayerScore] = useState(0);
 	const [computerHit, setComputerHit] = useState([]);
+	const [computerScore, setComputerScore] = useState(0);
+
+  useEffect(() => {
+		randomComputerShip();
+		randomComputerShip();
+		randomComputerShip();
+		randomComputerShipFire();
+		randomComputerShipFire();
+		randomComputerShipFire();
+	}, []);
+
 
 	//player places his ships
 	function playerShip(e) {
@@ -127,9 +139,9 @@ function App() {
 	function playerFirePosition(e) {
 		// Set ship variable to pisition in array ;
 		let fire = e.target.getAttribute("data-index");
-		playerFire[fire] = "Fire";
+		playerFire[fire] = "Ship";
 		setPlayerFire([...playerFire], playerFire[fire]);
-		console.log(playerFire);
+		console.log("player fire -->",playerFire);
 	}
 
 	//Computer random placement of ships
@@ -152,22 +164,13 @@ function App() {
 		console.log("computerPlayerFire ", computerPlayerFire);
 	}
 
-	useEffect(() => {
-		randomComputerShip();
-		randomComputerShip();
-		randomComputerShip();
-		randomComputerShipFire();
-		randomComputerShipFire();
-		randomComputerShipFire();
-	}, []);
-
 	// Check if player is hit
 	function fireToPlayer() {
 		for (let i = 0; i < player.length; i++) {
 			for (let j = 0; j < computerPlayerFire.length; j++) {
 				if (
-					player[i] != 0 &&
-					computerPlayerFire[j] != 0 &&
+					player[i] !== 0 &&
+					computerPlayerFire[j] !== 0 &&
 					player[i] === computerPlayerFire[j] &&
 					i === j
 				) {
@@ -178,7 +181,10 @@ function App() {
 						"computerFire ",
 						j
 					);
-					setPlayerHit([...playerHit, "hit at position ", j]);
+					setPlayerHit([...playerHit, j]);
+          setComputerScore( computerScore +1)
+          console.log("playerHit ", playerHit)
+          
 				}
 			}
 		}
@@ -189,8 +195,8 @@ function App() {
 		for (let i = 0; i < playerFire.length; i++) {
 			for (let j = 0; j < computerPlayer.length; j++) {
 				if (
-					playerFire[i] != 0 &&
-					computerPlayer[j] != 0 &&
+					playerFire[i] !== 0 &&
+					computerPlayer[j] !== 0 &&
 					playerFire[i] === computerPlayer[j] &&
 					i === j
 				) {
@@ -200,17 +206,23 @@ function App() {
 						i,
 						"computerPlayer ",
 						j
-					);
-					setComputerHit([...computerHit, "Computer hit at position ", j]);
-				}
+            );
+            setPlayerScore(playerScore + 1)
+            setComputerHit([...computerHit, j]);
+            console.log("computerHit ", computerHit)
+            
+          } 
 			}
 		}
 	}
 
+
+
 	return (
 		<>
 			<h1 className="text-center text-white mt-5">Battleship</h1>
-			<h4 className="text-white text-center"> Hit: {playerHit}</h4>
+			<h4 className="text-white text-center"> player Hit at position: {computerHit} {" "} computer hit at position: {playerHit}</h4>
+			<h4 className="text-success text-center"> player Score : {playerScore} {" "} computer Score : {computerScore}</h4>
 			<div className="container mt-5">
 				<div className="row">
 					{/* ___ Player ___ */}
@@ -246,7 +258,7 @@ function App() {
 									style={{ width: "15%" }}
 									data-index={index}
 									>
-									0
+									{key}
 								</button>
 							);
 						})}
@@ -287,7 +299,7 @@ function App() {
 									style={{ width: "15%" }}
 									data-index={index}
 									>
-									0
+									{key}
 								</button>
 							);
 						})}
@@ -296,13 +308,23 @@ function App() {
 				{/* The FIRE button */}
 				<div className="container">
 					<div className="row">
+          <button
+							type="button"
+							className="btn btn-danger mx-auto mt-2"
+							style={{ width: "200px" }}
+							onClick={fireToComputer}
+							>
+							player Fire
+						</button>
 						<button
 							type="button"
 							className="btn btn-danger mx-auto mt-2"
 							style={{ width: "200px" }}
-							onClick={fireToPlayer, fireToComputer}>
+							onClick={fireToPlayer}
+							>
 							Fire
 						</button>
+					
 					</div>
 				</div>
 			</div>
