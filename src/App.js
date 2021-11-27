@@ -113,10 +113,10 @@ function App() {
 	]);
 
 	const [playerHit, setPlayerHit] = useState([]);
-	const [playerScore, setPlayerScore] = useState([]);
+	const [playerScore, setPlayerScore] = useState(4);
 
 	const [computerHit, setComputerHit] = useState([]);
-	const [computerScore, setComputerScore] = useState([]);
+	const [computerScore, setComputerScore] = useState(4);
 
 	useEffect(() => {
 		randomComputerShip();
@@ -134,9 +134,31 @@ function App() {
 		// Set ship variable to pisition in array ;
 		let ship = e.target.getAttribute("data-index");
 		player[ship] = "Ship";
-		setPlayer([...player], player[ship]);
+		
+		
+		//Set maximum amount of ships allowed
+		let sum = 0;
+		for(let i = 0; i < player.length; i++){
+			if(player[i] === "Ship" ){
+				sum += 1
+			}
+		}
+		if(sum < 2){
+			alert("YOU CAN PLACE 3 MORE BATTLESHIPS");
+			setPlayer([...player], player[ship]);
+		} else if (sum < 3 ){
+			alert("YOU CAN PLACE 2 MORE BATTLESHIPS");
+			setPlayer([...player], player[ship]);
+		} else if(sum < 4){
+			alert("YOU CAN PLACE 1 MORE BATTLESHIPS");
+			setPlayer([...player], player[ship]);
+		} else {
+			alert ("YOU HAVE COMPLETED YOUR FLEET")
+		}
 		console.log(player);
 	}
+
+
 	//player picks firing position
 	function playerFirePosition(e) {
 		// Set ship variable to pisition in array ;
@@ -185,13 +207,36 @@ function App() {
 					);
 					setPlayerHit([...playerHit, j]);
 					console.log("playerHit ", playerHit)
+					
 					//reset to Bang when hit!
 					function playerBang() {
 						player[i] = "BANG!"
 						setPlayer([...player], player[i]);
 						console.log("BAAANG! -->", player);
+						
 					}
 					playerBang();
+					
+
+					//Set Player Score
+					function calculatePlayerScore(){
+						for(let i = 0; i < player.length; i++){
+							if(player[i] === "BANG!"){
+								setPlayerScore((playerScore -1 ) - 1)
+							}
+						}
+					}
+					calculatePlayerScore();
+
+					//Set Computer Score
+					function calculateComputerScore(){
+						for(let i = 0; i < computerPlayer.length; i++){
+							if(computerPlayer[i] === "BANG!"){
+								setComputerScore((computerScore) -1)
+							}
+						}
+					}
+					calculateComputerScore();
 
 				}
 			}
@@ -240,9 +285,10 @@ function App() {
 				<div className="row">
 					{/* ___ Player ___ */}
 					<div className="battle_square">
-						<h5 className="text-center text-white">Your ships</h5>
+						<h5 className="text-center text-white">Player Ships <span className="mx-3 text-info text-sm">Player Ships in fleet: {playerScore} </span></h5>
 						{player.map((key, index) => {
 							return (
+								
 								<button
 									type="button"
 									className="btn btn-info m-2"
@@ -260,9 +306,8 @@ function App() {
 					</div>
 					{/* ___ Computer Player Ships ___ */}
 					<div className="battle_square">
-						<h5 className="text-center text-white">
-							Computer Ships
-						</h5>
+					<h5 className="text-center text-white">Computer Ships: <span className="mx-3 text-info text-sm">Computer Ships in fleet: {computerScore} </span></h5>
+
 						
 						{computerPlayer.map((key, index) => {
 							return (
