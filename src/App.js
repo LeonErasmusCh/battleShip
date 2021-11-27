@@ -252,7 +252,8 @@ function App() {
 									}}
 									data-index={index}
 									onClick={playerShip}>
-									{key}
+									{key === "Ship" || key === "X" || key === 0 ? <span className="invisible">{key}</span> : <span className="">{key}</span> }
+
 								</button>
 							);
 						})}
@@ -262,6 +263,7 @@ function App() {
 						<h5 className="text-center text-white">
 							Computer Ships
 						</h5>
+						
 						{computerPlayer.map((key, index) => {
 							return (
 								<button
@@ -271,7 +273,8 @@ function App() {
 									style={{ width: "15%" }}
 									data-index={index}
 								>
-									{key}
+									{key === "Ship" || key === "X" || key === 0 ? <span className="invisible">{key}</span> : <span className="">{key}</span> }
+								 	
 								</button>
 							);
 						})}
