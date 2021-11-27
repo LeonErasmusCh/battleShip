@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import './App.css';
 
 function App() {
-  const [player, setPlayer] = useState([
+	const [player, setPlayer] = useState([
 		0,
 		0,
 		0,
@@ -113,17 +113,19 @@ function App() {
 	]);
 
 	const [playerHit, setPlayerHit] = useState([]);
-	const [playerScore, setPlayerScore] = useState(0);
-	const [computerHit, setComputerHit] = useState([]);
-	const [computerScore, setComputerScore] = useState(0);
+	const [playerScore, setPlayerScore] = useState([]);
 
-  useEffect(() => {
+	const [computerHit, setComputerHit] = useState([]);
+	const [computerScore, setComputerScore] = useState([]);
+
+	useEffect(() => {
 		randomComputerShip();
 		randomComputerShip();
 		randomComputerShip();
 		randomComputerShipFire();
 		randomComputerShipFire();
 		randomComputerShipFire();
+
 	}, []);
 
 
@@ -141,7 +143,7 @@ function App() {
 		let fire = e.target.getAttribute("data-index");
 		playerFire[fire] = "Ship";
 		setPlayerFire([...playerFire], playerFire[fire]);
-		console.log("player fire -->",playerFire);
+		console.log("player fire -->", playerFire);
 	}
 
 	//Computer random placement of ships
@@ -182,14 +184,20 @@ function App() {
 						j
 					);
 					setPlayerHit([...playerHit, j]);
-          setComputerScore( computerScore +1)
-          console.log("playerHit ", playerHit)
-          
+					console.log("playerHit ", playerHit)
+					//reset to Bang when hit!
+					function playerBang() {
+						player[i] = "BANG!"
+						setPlayer([...player], player[i]);
+						console.log("BAAANG! -->", player);
+					}
+					playerBang();
+
 				}
 			}
 		}
 	}
-  
+
 	// Check if Ship is hit
 	function fireToComputer() {
 		for (let i = 0; i < playerFire.length; i++) {
@@ -206,23 +214,28 @@ function App() {
 						i,
 						"computerPlayer ",
 						j
-            );
-            setPlayerScore(playerScore + 1)
-            setComputerHit([...computerHit, j]);
-            console.log("computerHit ", computerHit)
-            
-          } 
+					);
+					setComputerHit([...computerHit, j]);
+					console.log("computerHit ", computerHit)
+					//reset to Bang when hit!
+					function playerBang() {
+						computerPlayer[j] = "BANG!"
+						setComputerPlayer([...computerPlayer], computerPlayer[j]);
+						console.log("BAAANG! -->", computerPlayer);
+					}
+					playerBang();
+
+				}
 			}
 		}
 	}
 
 
 
+
 	return (
 		<>
 			<h1 className="text-center text-white mt-5">Battleship</h1>
-			<h4 className="text-white text-center"> player Hit at position: {computerHit} {" "} computer hit at position: {playerHit}</h4>
-			<h4 className="text-success text-center"> player Score : {playerScore} {" "} computer Score : {computerScore}</h4>
 			<div className="container mt-5">
 				<div className="row">
 					{/* ___ Player ___ */}
@@ -257,7 +270,7 @@ function App() {
 									key={{ key }}
 									style={{ width: "15%" }}
 									data-index={index}
-									>
+								>
 									{key}
 								</button>
 							);
@@ -298,7 +311,7 @@ function App() {
 									key={{ key }}
 									style={{ width: "15%" }}
 									data-index={index}
-									>
+								>
 									{key}
 								</button>
 							);
@@ -308,12 +321,12 @@ function App() {
 				{/* The FIRE button */}
 				<div className="container">
 					<div className="row">
-          <button
+						<button
 							type="button"
 							className="btn btn-danger mx-auto mt-2"
 							style={{ width: "200px" }}
 							onClick={fireToComputer}
-							>
+						>
 							player Fire
 						</button>
 						<button
@@ -321,15 +334,15 @@ function App() {
 							className="btn btn-danger mx-auto mt-2"
 							style={{ width: "200px" }}
 							onClick={fireToPlayer}
-							>
+						>
 							Fire
 						</button>
-					
+
 					</div>
 				</div>
 			</div>
 		</>
-  );
+	);
 }
 
 export default App;
