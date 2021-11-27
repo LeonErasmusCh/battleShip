@@ -141,20 +141,20 @@ function App() {
 	function playerFirePosition(e) {
 		// Set ship variable to pisition in array ;
 		let fire = e.target.getAttribute("data-index");
-		playerFire[fire] = "Ship";
+		playerFire[fire] = "X";
 		setPlayerFire([...playerFire], playerFire[fire]);
 		console.log("player fire -->", playerFire);
 	}
 
-	//Computer random placement of ships
+	//Computer random Fire Position
 	function randomComputerShip() {
 		// Set ship variable to pisition in array ;
 		let randomShip = Math.floor(Math.random() * 25);
-		computerPlayer[randomShip] = "Ship";
+		computerPlayer[randomShip] = "X";
 		setComputerPlayerFire([...computerPlayer], computerPlayer[randomShip]);
 		console.log(computerPlayer);
 	}
-	//Computer random Fire Position
+	//Computer random placement of ships
 	function randomComputerShipFire() {
 		// Set ship variable to pisition in array ;
 		let randomShipFire = Math.floor(Math.random() * 25);
@@ -171,9 +171,9 @@ function App() {
 		for (let i = 0; i < player.length; i++) {
 			for (let j = 0; j < computerPlayerFire.length; j++) {
 				if (
-					player[i] !== 0 &&
-					computerPlayerFire[j] !== 0 &&
-					player[i] === computerPlayerFire[j] &&
+					player[i] === "Ship" &&
+					computerPlayerFire[j] === "X" &&
+					player[i] !== computerPlayerFire[j] &&
 					i === j
 				) {
 					console.log(
@@ -203,9 +203,9 @@ function App() {
 		for (let i = 0; i < playerFire.length; i++) {
 			for (let j = 0; j < computerPlayer.length; j++) {
 				if (
-					playerFire[i] !== 0 &&
-					computerPlayer[j] !== 0 &&
-					playerFire[i] === computerPlayer[j] &&
+					playerFire[i] ==="X" &&
+					computerPlayer[j] === "Ship" &&
+					playerFire[i] !== computerPlayer[j] &&
 					i === j
 				) {
 					console.log(
